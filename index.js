@@ -1,35 +1,31 @@
-//import the express module
+// Import required modules
 const express = require('express');
 const mongoose = require('mongoose');
-const authRouter=require('./routes/auth');
+const cors = require('cors');
+const authRouter = require('./routes/auth');
 
-//Define the port number the server will listen on
+// Define constants
 const PORT = 3000;
-//create an instance of an express application
-//beceause it give us the starting port
+const DB = "mongodb+srv://jundullha:asif2003@cluster0.ysxz9bx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+// Create Express app
 const app = express();
 
-// app.get("/hello",(req,res)=>{
-//     res.send('Hello world');
-// });
-//mongodb string
+// Middleware
+app.use(cors()); // Allow requests from frontend (e.g., Flutter Web)
+app.use(express.json()); // Parse incoming JSON
+app.use('/api', authRouter); // Mount all routes under /api
 
-const DB="mongodb+srv://jundullha:asif2003@cluster0.ysxz9bx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-//middleware - to register routes or to mount routes
-app.use(express.json());
-app.use(authRouter);
-app.use('/api', authRouter);
+// Connect to MongoDB
+mongoose.connect(DB)
+  .then(() => {
+    console.log('MongoDB connected');
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+  });
 
-
-
-mongoose.connect(DB).then(()=>{
-    console.log('Mongodb connected');
-});
-
-
-//start the server and on the specified port
-app.listen(PORT,"0.0.0.0", function(){
-    //LOG THE NUMBER
-    console.log(`server is running on port ${PORT}`);
-
+// Start the server
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });

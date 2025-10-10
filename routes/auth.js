@@ -5,7 +5,7 @@ const authRouter = express.Router();
 const jwt= require('jsonwebtoken');
 
 
-authRouter.post('/api/signup', async (req, res) => {
+authRouter.post('/signup', async (req, res) => {
     try {
         const { fullname, email, password } = req.body;
 
@@ -48,10 +48,10 @@ authRouter.post('/api/signup', async (req, res) => {
 });
 
 //signin api endpoint
-authRouter.post('/api/signin',async(req,res)=>{
+authRouter.post('/signin',async(req,res)=>{
     try{
         const {email,password} =req.body;
-        const findUser =await User.findUser({email});
+        const findUser =await User.findOne({email});
         if(!findUser){
             return res.status(400).json({msg:"User not found with this email"});
 

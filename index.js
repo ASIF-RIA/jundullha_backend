@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authRouter = require('./routes/auth');
+const bannerRouter = require('./routes/banner');
 
 // Define constants
 const PORT = 3000;
@@ -15,6 +16,7 @@ const app = express();
 app.use(cors()); // Allow requests from frontend (e.g., Flutter Web)
 app.use(express.json()); // Parse incoming JSON
 app.use('/api', authRouter); // Mount all routes under /api
+app.use('/api', bannerRouter);
 
 // Connect to MongoDB
 mongoose.connect(DB)
